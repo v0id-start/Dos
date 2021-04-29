@@ -2,6 +2,8 @@ import sys
 
 from Player import *
 from Deck import *
+from ascii import *
+
 """
  --
 |  |
@@ -67,41 +69,15 @@ def play(players, deck):
 
 input=("")
 
-cards = ["""
- ----------------
-| @@@@ RED  @@@@ |
-|       _        |
-|      / |       |
-|      - |       |
-|      | |       |
-|      | |       |
-|      |_|       |
-|                |
-| @@@@ RED  @@@@ |
- ----------------
-""","""
- ----------------
-| @@@@ RED  @@@@ |
-|       _        |
-|      / |       |
-|      - |       |
-|      | |       |
-|      | |       |
-|      |_|       |
-|                |
-| @@@@ RED  @@@@ |
- ----------------""","""
- ----------------
-| @@@@ RED  @@@@ |
-|       _        |
-|      / |       |
-|      - |       |
-|      | |       |
-|      | |       |
-|      |_|       |
-|                |
-| @@@@ RED  @@@@ |
- ----------------"""]
+cards = []
+for i in range(1,10):
+    x = Card(c="g",n=i)
+    a = ascii.card_to_ascii(x)
+    cards.append(a)
+cards.append(ascii.card_to_ascii(Card("reverse","green")))
+cards.append(ascii.card_to_ascii(Card("draw_two","green")))
+cards.append(ascii.card_to_ascii(Card("skip","red")))
+
 def print_hand(hand):
     lines = [cards[i].splitlines() for i in range(len(cards))]
     for l in zip(*lines):
