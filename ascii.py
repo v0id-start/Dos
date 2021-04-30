@@ -1,3 +1,4 @@
+import os
 class ascii:
     """
     r1
@@ -46,8 +47,6 @@ $$$$$$\\ $$\\   $$\\  $$$$$$\\ $$$$$$$$\\ $$$$$$$\\  $$\\   $$\\  $$$$$$\\ $$$$$
   $$ |  $$ |\\$$$ |$$\\   $$ |  $$ |   $$ |  $$ |$$ |  $$ |$$ |  $$\\   $$ |     $$ |  $$ |  $$ |$$ |\\$$$ |$$\\   $$ |
 $$$$$$\\ $$ | \\$$ |\\$$$$$$  |  $$ |   $$ |  $$ |\\$$$$$$  |\\$$$$$$  |  $$ |   $$$$$$\\  $$$$$$  |$$ | \\$$ |\\$$$$$$  |
 \\______|\\__|  \\__| \\______/   \\__|   \\__|  \\__| \\______/  \\______/   \\__|   \\______| \\______/ \\__|  \\__| \\______/ 
-
-
           $$\\                     $$$$$$$\\                  $$\\         $$\\                                                          
         $$$$ |                    $$  __$$\\                 $$ |      $$$$ |                                                         
  $$$$$$\\\\_$$ |        $$$$\\       $$ |  $$ | $$$$$$\\   $$$$$$$ |      \\_$$ |                                                         
@@ -112,7 +111,6 @@ $$ |            \\____|      $$ |  $$ |$$ |     $$  __$$ |$$ | $$ | $$ |      $$
 (  .__)   )
  `-.____,'
 %s
-
                                 
                                 
                                 
@@ -120,7 +118,6 @@ $$ |            \\____|      $$ |  $$ |$$ |     $$  __$$ |$$ | $$ | $$ |      $$
 
         elif len(players) == 3:
             board = """
-
                                     %s
                                 .       .
                                 \\`-"'"-'/
@@ -137,14 +134,10 @@ $$ |            \\____|      $$ |  $$ |$$ |     $$  __$$ |$$ | $$ | $$ |      $$
 (  .__)   )
  `-.____,'
 %s
-
-
-
                 """ % (str(len(players[1].hand)) + players[1].say_turn, str(len(players[2].hand)) + players[2].say_turn, ascii_pile_card)
 
         elif len(players) == 4:
             board = """
-
                                             %s
                                         .       .
                                         \\`-"'"-'/
@@ -170,10 +163,19 @@ $$ |            \\____|      $$ |  $$ |$$ |     $$  __$$ |$$ | $$ | $$ |      $$
                                                      w /|
                                                       | \\
                                                      m  m
-
-
                         """ % (str(len(players[1].hand)) + players[1].say_turn, str(len(players[2].hand)) + players[2].say_turn, ascii_pile_card, str(len(players[3].hand)) + players[3].say_turn)
         return board
+
+    @staticmethod
+    def redraw(players, deck):
+        os.system('cls')
+        # Draw pile card at center
+        ascii_centered_card = ascii.center_ascii_card(ascii.card_to_ascii(deck.get_top_pile()))
+        print(ascii.get_board(players, ascii_centered_card))
+
+        # Draw player's hand
+        players[0].generate_ascii_hand()
+        players[0].print_hand()
 
     #Types are: wild, skip, reverse, draw_2, draw_4
     @staticmethod
