@@ -41,14 +41,17 @@ class Deck:
             print("RE-PILING CARDS")
             return self.card_deck.pop(0)
 
-    def add_card_to_pile(self):
+    def add_top_card_to_pile(self):
         self.pile.append(self.remove_top_card())
+
+    def add_card_to_pile(self, card):
+        self.pile.append(card)
 
     def re_pile_cards(self):
         self.deck = self.pile
         self.pile = []
         self.shuffle()
-        self.add_card_to_pile()
+        self.add_top_card_to_pile()
 
     def get_top_pile(self):
         return self.pile[-1]
