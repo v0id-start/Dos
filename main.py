@@ -1,9 +1,26 @@
-import sys, os
+import sys
+import os
 
 from Player import *
 from Deck import *
 from ascii import *
 from cpu import *
+
+# System call
+os.system("")
+
+# Class of different styles
+class style():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
 
 
 def get_turn(reverse, num_players, turn):
@@ -22,11 +39,16 @@ def get_turn(reverse, num_players, turn):
     return turn
 print(get_turn(True, 3, 2))
 def menu():
+    print(style.CYAN)
     ascii.draw_menu()
     setup()
 
 def setup():
-    num_bots = int(input("How many bots to play against?\n"))
+
+    num_bots = int(input("How many bots to play against? (1-3)\n"))
+
+    while num_bots < 1 or num_bots > 3:
+        num_bots = int(input("How many bots to play against? (1-3)\n"))
 
     players = []
 
@@ -41,8 +63,9 @@ def setup():
     deck.shuffle()
     deck.add_top_card_to_pile()
 
+    num_start_cards = 7
     for player in players:
-        for i in range(7):
+        for i in range(num_start_cards):
             player.add_card(deck)
 
     play(players, deck)
@@ -50,22 +73,45 @@ def setup():
 
 
 
-
+print(style.RESET)
 
 def play(players, deck):
+    print(style.RESET)
     playing = True
     reverse = False
+    skip = False
     turn = 0
+    next_turn = 1
     human = players[0]
+    game_info = [reverse, skip]
     while playing:
         ascii.redraw(players,deck)
 
+        next_turn = get_turn(reverse, len(players), turn)
+
         if turn == 0:
-            human.take_turn(players, deck)
-            #Increment turn
+            game_info = human.take_turn(players, deck, next_turn, reverse)
+            reverse = game_info[0]
+            skip = game_info[1]
+            won = game_info[2]
+            if won:
+                print(style.GREEN)
+                ascii.human_win()
+                playing = False
         else:
-            players[turn].take_turn()
-        #turn = get_turn(reverse, len(players), turn)
+            game_info = players[turn].take_turn(players, deck, next_turn, reverse)
+            reverse = game_info[0]
+            skip = game_info[1]
+            won = game_info[2]
+            if won:
+                print(style.MAGENTA)
+                ascii.cpu_win()
+                playing = False
+        if skip:
+            turn = get_turn(reverse, len(players), turn)
+            skip = False
+
+        turn = get_turn(reverse, len(players), turn)
 
 
 menu()

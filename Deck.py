@@ -15,9 +15,7 @@ class Deck:
             for i in range(1,10):
                 self.card_deck.append(Card(c=color, n=i))
 
-    def __init__(self):
-        self.card_deck = []
-        self.pile = []
+    def create_deck(self):
         for i in range(4):
             self.card_deck.append(Card("wild"))
 
@@ -29,6 +27,10 @@ class Deck:
         self.populate("green")
         self.populate("blue")
 
+    def __init__(self):
+        self.card_deck = []
+        self.pile = []
+        self.create_deck()
 
     def shuffle(self):
         random.shuffle(self.card_deck)
@@ -48,10 +50,7 @@ class Deck:
         self.pile.append(card)
 
     def re_pile_cards(self):
-        self.deck = self.pile
-        self.pile = []
-        self.shuffle()
-        self.add_top_card_to_pile()
+        self.create_deck()
 
     def get_top_pile(self):
         return self.pile[-1]
